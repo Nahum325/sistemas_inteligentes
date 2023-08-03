@@ -112,7 +112,7 @@ class DistanciaEuclidiana(Distancia):
             print(f"Unexpected {err=}, {type(err)=}")
             raise
 
-class DistanciaMinkowski(Distancia):
+class DistanciaCamberra(Distancia):
     def __init__(self, start_point: Point, end_point: Point) -> None:                
         if type(start_point) == type(end_point) == Point:
             if start_point.get_space_dimension() == end_point.get_space_dimension():
@@ -126,7 +126,7 @@ class DistanciaMinkowski(Distancia):
     def get_distance(self, distanceType: str) -> float:
         try:
             distanceType = distanceType.lower()
-            distance_function = lambda start, end, p: sum(abs(st - en) ** p for st, en in zip(start, end)) ** (1/p)
+            distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) for st, en in zip(start, end))
             return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
         except KeyError:
             raise KeyError(f"{distanceType} is not a valid type of distance.")
