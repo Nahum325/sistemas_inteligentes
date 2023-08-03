@@ -81,11 +81,8 @@ class DistanciaManhattan(Distancia):
             
     def get_distance(self) -> float:
         try:
-            distanceType = distanceType.lower()
             distance_function = lambda start, end: sum(abs(st - en) for st, en in zip(start, end))
             return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
-        except KeyError:
-            raise KeyError(f"{distanceType} is not a valid type of distance.")
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
             raise
@@ -103,11 +100,8 @@ class DistanciaEuclidiana(Distancia):
             
     def get_distance(self) -> float:
         try:
-            distanceType = distanceType.lower()
             distance_function = lambda start, end: (sum((st - en)**2 for st, en in zip(start, end))) ** (1/2)
             return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
-        except KeyError:
-            raise KeyError(f"{distanceType} is not a valid type of distance.")
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
             raise
@@ -125,11 +119,8 @@ class DistanciaCamberra(Distancia):
             
     def get_distance(self) -> float:
         try:
-            distanceType = distanceType.lower()
             distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) for st, en in zip(start, end))
             return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
-        except KeyError:
-            raise KeyError(f"{distanceType} is not a valid type of distance.")
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
             raise
