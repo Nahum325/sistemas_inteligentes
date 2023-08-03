@@ -65,7 +65,7 @@ class Distancia(ABC):
         return self.__end_point
 
     @abstractmethod
-    def get_distance(self, distanceType: str) -> float:
+    def get_distance(self) -> float:
         pass
 
 class DistanciaManhattan(Distancia):
@@ -79,7 +79,7 @@ class DistanciaManhattan(Distancia):
         else:
             raise TypeError("One of the arguments is not a point.")
             
-    def get_distance(self, distanceType: str) -> float:
+    def get_distance(self) -> float:
         try:
             distanceType = distanceType.lower()
             distance_function = lambda start, end: sum(abs(st - en) for st, en in zip(start, end))
@@ -101,7 +101,7 @@ class DistanciaEuclidiana(Distancia):
         else:
             raise TypeError("One of the arguments is not a point.")
             
-    def get_distance(self, distanceType: str) -> float:
+    def get_distance(self) -> float:
         try:
             distanceType = distanceType.lower()
             distance_function = lambda start, end: (sum((st - en)**2 for st, en in zip(start, end))) ** (1/2)
@@ -123,7 +123,7 @@ class DistanciaCamberra(Distancia):
         else:
             raise TypeError("One of the arguments is not a point.")
             
-    def get_distance(self, distanceType: str) -> float:
+    def get_distance(self) -> float:
         try:
             distanceType = distanceType.lower()
             distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) for st, en in zip(start, end))
