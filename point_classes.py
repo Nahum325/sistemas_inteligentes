@@ -141,16 +141,15 @@ class Point:
         raise ValueError(f"El argumento ingresado '{coordinate}' no es de tipo int o str")
 
 
-
 class Distancia(ABC):
     """
     Clase abstracta que representa un segmento de línea entre dos puntos en un espacio.
 
     Atributos
     ---------
-    __start_point: Point
+    _start_point: Point
         El punto inicial del segmento de línea.
-    __end_point: Point
+    _end_point: Point
         El punto final del segmento de línea.
 
     Métodos
@@ -177,65 +176,13 @@ class Distancia(ABC):
         """
         Devuelve el punto inicial del segmento de línea.
         """
-        return self.__start_point
+        return self._start_point
 
     def get_end_point(self) -> Point:
         """
         Devuelve el punto final del segmento de línea.
         """
-        return self.__end_point
-
-    @abstractmethod
-    def get_distance(self) -> float:
-        """
-        Método abstracto para calcular la distancia entre los dos puntos.
-        Este método debe ser implementado por cualquier subclase de Distancia.
-        """
-        pass
-
-
-class Distancia(ABC):
-    """
-    Clase abstracta que representa un segmento de línea entre dos puntos en un espacio.
-
-    Atributos
-    ---------
-    __start_point: Point
-        El punto inicial del segmento de línea.
-    __end_point: Point
-        El punto final del segmento de línea.
-
-    Métodos
-    -------
-    __str__() -> str:
-        Devuelve una representación de cadena del segmento de línea.
-
-    get_start_point() -> Point:
-        Devuelve el punto inicial del segmento de línea.
-
-    get_end_point() -> Point:
-        Devuelve el punto final del segmento de línea.
-
-    get_distance() -> float:
-        Método abstracto para calcular la distancia entre los dos puntos.
-    """
-    def __str__(self) -> str:
-        """
-        Devuelve una representación de cadena del segmento de línea.
-        """
-        return f"Segmento de línea entre {self.get_start_point()} y {self.get_end_point()}"
-
-    def get_start_point(self) -> Point:
-        """
-        Devuelve el punto inicial del segmento de línea.
-        """
-        return self.__start_point
-
-    def get_end_point(self) -> Point:
-        """
-        Devuelve el punto final del segmento de línea.
-        """
-        return self.__end_point
+        return self._end_point
 
     @abstractmethod
     def get_distance(self) -> float:
@@ -280,8 +227,8 @@ class DistanciaEuclidiana(Distancia):
         """
         if type(start_point) == type(end_point) == Point:
             if start_point.get_space_dimension() == end_point.get_space_dimension():
-                self.__start_point: Point = start_point
-                self.__end_point: Point = end_point
+                self._start_point: Point = start_point
+                self._end_point: Point = end_point
             else:
                 raise ValueError(f"No se puede crear un segmento entre un punto de {start_point.get_space_dimension()} dimensiones y un punto de {end_point.get_space_dimension()} dimensiones.")                
         else:
@@ -298,7 +245,7 @@ class DistanciaEuclidiana(Distancia):
         """
         try:
             distance_function = lambda start, end: (sum((st - en)**2 for st, en in zip(start, end))) ** (1/2)
-            return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
+            return distance_function(self._start_point.get_coordinates(), self._end_point.get_coordinates())
         except Exception as err:
             print(f"Inesperado {err=}, {type(err)=}")
             raise
@@ -338,8 +285,8 @@ class DistanciaCamberra(Distancia):
         """
         if type(start_point) == type(end_point) == Point:
             if start_point.get_space_dimension() == end_point.get_space_dimension():
-                self.__start_point: Point = start_point
-                self.__end_point: Point = end_point
+                self._start_point: Point = start_point
+                self._end_point: Point = end_point
             else:
                 raise ValueError(f"No se puede crear un segmento entre un punto de {start_point.get_space_dimension()} dimensiones y un punto de {end_point.get_space_dimension()} dimensiones.")                
         else:
@@ -356,7 +303,65 @@ class DistanciaCamberra(Distancia):
         """
         try:
             distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) for st, en in zip(start, end))
-            return distance_function(self.__start_point.get_coordinates(), self.__end_point.get_coordinates())
+            return distance_function(self._start_point.get_coordinates(), self._end_point.get_coordinates())
+        except Exception as err:
+            print(f"Inesperado {err=}, {type(err)=}")
+            raise
+
+
+class DistanciaManhattan(Distancia):
+    """
+    Clase que representa un segmento de línea entre dos puntos en un espacio y calcula la distancia de Manhattan entre ellos.
+
+    Hereda de la clase Distancia.
+
+    Métodos
+    -------
+    __init__(start_point: Point, end_point: Point) -> None:
+        Inicializa el segmento de línea con los puntos de inicio y fin proporcionados.
+
+    get_distance() -> float:
+        Calcula y devuelve la distancia de Manhattan entre los puntos de inicio y fin.
+    """
+    def __init__(self, start_point: Point, end_point: Point) -> None: 
+        """
+        Inicializa el segmento de línea con los puntos de inicio y fin proporcionados.
+
+        Parámetros
+        ----------
+        start_point: Point
+            El punto inicial del segmento de línea.
+        end_point: Point
+            El punto final del segmento de línea.
+
+        Lanza
+        -----
+        ValueError
+            Si los puntos de inicio y fin no tienen la misma dimensión.
+        TypeError
+            Si uno de los argumentos no es un objeto de la clase Point.
+        """
+        if type(start_point) == type(end_point) == Point:
+            if start_point.get_space_dimension() == end_point.get_space_dimension():
+                self._start_point: Point = start_point
+                self._end_point: Point = end_point
+            else:
+                raise ValueError(f"No se puede crear un segmento entre un punto de {start_point.get_space_dimension()} dimensiones y un punto de {end_point.get_space_dimension()} dimensiones.")                
+        else:
+            raise TypeError("Uno de los argumentos no es un punto.")
+            
+    def get_distance(self) -> float:
+        """
+        Calcula y devuelve la distancia de Camberra entre los puntos de inicio y fin.
+
+        Lanza
+        -----
+        Exception
+            Si ocurre un error inesperado al calcular la distancia.
+        """
+        try:
+            distance_function = lambda start, end: sum(abs(st - en) for st, en in zip(start, end))
+            return distance_function(self._start_point.get_coordinates(), self._end_point.get_coordinates())
         except Exception as err:
             print(f"Inesperado {err=}, {type(err)=}")
             raise
