@@ -66,7 +66,7 @@ class Point:
         """
         Devuelve una representación de cadena del punto.
         """
-        return f"{self.get_space_dimension()}D point at {self.get_coordinates()}"
+        return f"punto {self.get_space_dimension()}D en coordinadas {self.get_coordinates()}"
 
     def get_space_dimension(self) -> int:
         """
