@@ -302,7 +302,7 @@ class DistanciaCamberra(Distancia):
             Si ocurre un error inesperado al calcular la distancia.
         """
         try:
-            distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) for st, en in zip(start, end))
+            distance_function = lambda start, end: sum(abs(st - en) / (abs(st) + abs(en)) if abs(st) + abs(en) != 0 else 0 for st, en in zip(start, end))
             return distance_function(self._start_point.get_coordinates(), self._end_point.get_coordinates())
         except Exception as err:
             print(f"Inesperado {err=}, {type(err)=}")
