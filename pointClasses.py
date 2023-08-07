@@ -12,13 +12,13 @@ class Point:
 
     Atributos
     ---------
-    __coords_dictionary: dict[str, int]
+    _coords_dictionary: dict[str, int]
         Un diccionario que mapea las coordenadas "x", "y", "z" a los índices 0, 1, 2 respectivamente.
-    __ndim: int
+    _ndim: int
         Número de dimensiones del punto.
-    __values: ArrayLike
+    _values: ArrayLike
         Un array de numpy que almacena las coordenadas del punto.
-    __graphable: bool
+    _graphable: bool
         Variable que indica si el punto es graficable o no.
 
     Métodos
@@ -44,7 +44,7 @@ class Point:
     get_coordinate(coordinate: Union[str, int]) -> float:
         Devuelve una coordenada específica del punto.
     """
-    __coords_dictionary: dict[str, int] = {"x": 0, "y": 1, "z": 2}
+    _coords_dictionary: dict[str, int] = {"x": 0, "y": 1, "z": 2}
 
     def __init__(self, *args: Iterable) -> None:
         """
@@ -56,11 +56,11 @@ class Point:
         *args: Iterable
             Las coordenadas del punto.
         """
-        self.__ndim: int = len(args)
-        self.__values: ArrayLike = np.array(args)
-        self.__graphable: bool = True
-        if (self.__ndim == 0) or (self.__ndim > 3) :
-            self.__graphable = False
+        self._ndim: int = len(args)
+        self._values: ArrayLike = np.array(args)
+        self._graphable: bool = True
+        if (self._ndim == 0) or (self._ndim > 3) :
+            self._graphable = False
 
     def __str__(self) -> str:
         """
@@ -72,19 +72,19 @@ class Point:
         """
         Devuelve el número de dimensiones del punto.
         """
-        return self.__ndim
+        return self._ndim
 
     def get_graphable(self) -> bool:
         """
         Devuelve si el punto es graficable o no.
         """
-        return self.__graphable    
+        return self._graphable    
 
     def get_coordinates(self) -> ArrayLike:
         """
         Devuelve las coordenadas del punto.
         """
-        return self.__values        
+        return self._values        
         
     def set_coordinates(self, *args: Iterable) -> None:
         """
@@ -96,11 +96,11 @@ class Point:
         *args: Iterable
             Las nuevas coordenadas del punto.
         """
-        self.__ndim = len(args)
-        self.__values = np.array(args)
-        self.__graphable = True
-        if (self.__ndim == 0) or (self.__ndim > 3) :
-            self.__graphable = False
+        self._ndim = len(args)
+        self._values = np.array(args)
+        self._graphable = True
+        if (self._ndim == 0) or (self._ndim > 3) :
+            self._graphable = False
 
     def get_coordinate(self, coordinate: Union[str, int]) -> float:
         """
@@ -122,9 +122,9 @@ class Point:
         if type(coordinate) == str:
             try:
                 coordinate = coordinate.lower()
-                return self.__values[Point.__coords_dictionary[coordinate]]
+                return self._values[Point._coords_dictionary[coordinate]]
             except IndexError:
-                raise Exception(f"El argumento ingresado '{coordinate}' no es una coordenada válida para un punto de {self.__ndim} dimensiones")
+                raise Exception(f"El argumento ingresado '{coordinate}' no es una coordenada válida para un punto de {self._ndim} dimensiones")
             except KeyError:
                 raise Exception(f"El argumento ingresado '{coordinate}' no es una coordenada válida. Prueba con un número o (X,Y,Z)")   
             except Exception as err:
@@ -132,9 +132,9 @@ class Point:
                 raise
         if type(coordinate) == int:
             try:
-                return self.__values[coordinate]
+                return self._values[coordinate]
             except IndexError:
-                raise Exception(f"El argumento ingresado '{coordinate}' no es una coordenada válida para un punto de {self.__ndim } dimensiones")
+                raise Exception(f"El argumento ingresado '{coordinate}' no es una coordenada válida para un punto de {self._ndim } dimensiones")
             except Exception as err:
                 print(f"Inesperado {err=}, {type(err)=}")
                 raise   
@@ -245,8 +245,6 @@ class Distancia(ABC):
         """
         pass
 
-
-__autor__ = "Nombre del Autor"
 
 class DistanciaEuclidiana(Distancia):
     """
@@ -362,4 +360,3 @@ class DistanciaCamberra(Distancia):
         except Exception as err:
             print(f"Inesperado {err=}, {type(err)=}")
             raise
-
